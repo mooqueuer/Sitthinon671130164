@@ -3,63 +3,223 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ยินดีต้อนรับ - ระบบประเมิน</title>
-    <link rel="stylesheet" href="style.css">
+    <title>เข้าสู่ระบบประเมิน</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;700&display=swap" rel="stylesheet">
     <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Kanit', sans-serif; }
+
         body {
+            background-color: #000;
+            min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            text-align: center;
-            flex-direction: column;
+            overflow: hidden;
+            perspective: 1000px; /* หัวใจสำคัญของ 3D */
         }
-        .landing-card {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(15px);
+
+        /* พื้นหลังเคลื่อนไหวแบบ Nebula */
+        .bg-animation {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(45deg, #0f0c29, #302b63, #24243e);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            z-index: -2;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* ลูกไฟลอยไปมา */
+        .orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.6;
+            z-index: -1;
+            animation: floatOrb 10s infinite alternate;
+        }
+        .orb-1 { width: 300px; height: 300px; background: #ff00cc; top: -50px; left: -50px; }
+        .orb-2 { width: 400px; height: 400px; background: #3333ff; bottom: -100px; right: -100px; animation-delay: -5s; }
+
+        @keyframes floatOrb {
+            from { transform: translate(0, 0); }
+            to { transform: translate(50px, 50px); }
+        }
+
+        /* ตัวการ์ด 3D */
+        .card-3d {
+            width: 450px;
             padding: 50px;
-            border-radius: 20px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            max-width: 600px;
-            animation: fadeIn 1s ease-out;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 30px;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.5);
+            transform-style: preserve-3d; /* ให้ของข้างในลอยออกมาได้ */
+            text-align: center;
+            transition: transform 0.1s;
         }
-        h1 {
-            font-size: 3rem;
-            margin-bottom: 10px;
-            background: linear-gradient(to right, #45f3ff, #bc13fe);
+
+        /* ไอคอนจรวดลอยได้ */
+        .rocket-icon {
+            font-size: 80px;
+            background: linear-gradient(to bottom, #45f3ff, #bc13fe);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            margin-bottom: 20px;
+            animation: floatRocket 3s ease-in-out infinite;
+            transform: translateZ(50px); /* ลอยออกมาจากการ์ด */
         }
-        p { color: #ccc; margin-bottom: 40px; font-size: 1.1rem; }
-        .btn-group { display: flex; gap: 20px; justify-content: center; }
-        .btn-landing {
-            padding: 15px 40px;
+
+        @keyframes floatRocket {
+            0%, 100% { transform: translateY(0) translateZ(50px); }
+            50% { transform: translateY(-20px) translateZ(50px); }
+        }
+
+        /* หัวข้อ Glitch Effect */
+        h1 {
+            color: white;
+            font-size: 2.5em;
+            font-weight: 700;
+            text-transform: uppercase;
+            position: relative;
+            transform: translateZ(30px);
+            margin-bottom: 10px;
+        }
+
+        h1::before, h1::after {
+            content: attr(data-text);
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            opacity: 0.8;
+        }
+
+        h1::before {
+            color: #0ff;
+            z-index: -1;
+            clip-path: polygon(0 0, 100% 0, 100% 45%, 0 45%);
+            animation: glitch 3s infinite linear alternate-reverse;
+        }
+
+        h1::after {
+            color: #f0f;
+            z-index: -2;
+            clip-path: polygon(0 55%, 100% 55%, 100% 100%, 0 100%);
+            animation: glitch 2s infinite linear alternate-reverse;
+        }
+
+        @keyframes glitch {
+            0% { transform: translate(0); }
+            20% { transform: translate(-2px, 2px); }
+            40% { transform: translate(-2px, -2px); }
+            60% { transform: translate(2px, 2px); }
+            80% { transform: translate(2px, -2px); }
+            100% { transform: translate(0); }
+        }
+
+        p {
+            color: #ccc;
+            margin-bottom: 40px;
+            font-size: 1.1em;
+            transform: translateZ(20px);
+        }
+
+        /* ปุ่มกดสุดเท่ */
+        .btn-group {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            transform: translateZ(40px); /* ลอยออกมา */
+        }
+
+        .btn {
+            padding: 15px 30px;
             border-radius: 50px;
-            text-decoration: none;
+            font-size: 1em;
             font-weight: bold;
-            font-size: 1.1rem;
+            text-decoration: none;
             transition: 0.3s;
+            position: relative;
+            overflow: hidden;
+            display: flex; align-items: center; gap: 10px;
         }
-        .btn-login { background: #45f3ff; color: #000; box-shadow: 0 0 15px rgba(69, 243, 255, 0.4); }
-        .btn-register { border: 2px solid #45f3ff; color: #45f3ff; }
-        .btn-register:hover { background: #45f3ff; color: #000; }
-        .btn-login:hover { transform: scale(1.05); box-shadow: 0 0 25px rgba(69, 243, 255, 0.6); }
-        
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+        .btn-login {
+            background: #45f3ff;
+            color: #000;
+            box-shadow: 0 0 20px rgba(69, 243, 255, 0.4);
+        }
+
+        .btn-login:hover {
+            background: #fff;
+            box-shadow: 0 0 40px rgba(69, 243, 255, 0.8);
+            transform: scale(1.1);
+        }
+
+        .btn-register {
+            background: transparent;
+            color: #fff;
+            border: 2px solid #bc13fe;
+        }
+
+        .btn-register:hover {
+            background: #bc13fe;
+            box-shadow: 0 0 30px rgba(188, 19, 254, 0.6);
+            transform: scale(1.1);
+        }
+
     </style>
 </head>
 <body>
 
-    <div class="landing-card">
-        <div style="font-size: 80px; margin-bottom: 20px;">🚀</div>
-        <h1>Evaluation System</h1>
-        <p>ระบบประเมินบุคลากรและนักศึกษาออนไลน์<br>สะดวก รวดเร็ว ปลอดภัย</p>
+    <div class="bg-animation"></div>
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+
+    <div class="card-3d" id="tiltCard">
+        <div class="rocket-icon"><i class="fas fa-rocket"></i></div>
         
+        <h1 data-text="ระบบประเมินบุคลากร">ระบบประเมินบุคลากร</h1>
+
         <div class="btn-group">
-            <a href="login.html" class="btn-landing btn-login"><i class="fas fa-sign-in-alt"></i> เข้าสู่ระบบ</a>
-            <a href="register.html" class="btn-landing btn-register"><i class="fas fa-user-plus"></i> สมัครสมาชิก</a>
+            <a href="login.html" class="btn btn-login">
+                <i class="fas fa-sign-in-alt"></i> เข้าสู่ระบบ
+            </a>
+            <a href="register.html" class="btn btn-register">
+                <i class="fas fa-user-plus"></i> สมัครสมาชิก
+            </a>
         </div>
     </div>
+
+    <script>
+        // สคริปต์ทำเอฟเฟกต์ 3D Tilt ตามเมาส์
+        const card = document.getElementById('tiltCard');
+
+        document.addEventListener('mousemove', (e) => {
+            const xAxis = (window.innerWidth / 2 - e.pageX) / 25;
+            const yAxis = (window.innerHeight / 2 - e.pageY) / 25;
+            
+            // เอียงการ์ดตามเมาส์
+            card.style.transform = `rotateY(${xAxis}deg) rotateX(${yAxis}deg)`;
+        });
+
+        // เมื่อเมาส์ออก ให้กลับมาตรงเหมือนเดิม
+        document.addEventListener('mouseleave', () => {
+            card.style.transition = 'all 0.5s ease';
+            card.style.transform = `rotateY(0deg) rotateX(0deg)`;
+        });
+
+        // เมื่อเมาส์เข้า ให้ยกเลิก transition เพื่อความลื่นไหล
+        document.addEventListener('mouseenter', () => {
+            card.style.transition = 'none';
+        });
+    </script>
 
 </body>
 </html>
