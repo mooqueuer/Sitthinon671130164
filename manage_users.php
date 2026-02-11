@@ -1,7 +1,10 @@
 <?php 
 session_start();
 include('db.php');
-if (!isset($_SESSION['username']) || $_SESSION['role'] != 'admin') { header("location: login.html"); exit(); }
+// ตรวจสอบสิทธิ์: ต้องล็อกอิน และต้องเป็น admin
+if (!isset($_SESSION['username']) || (isset($_SESSION['role']) && $_SESSION['role'] != 'admin')) { 
+    header("location: login.html"); exit(); 
+}
 
 // ลบผู้ใช้
 if (isset($_GET['del'])) {
@@ -39,20 +42,18 @@ $result = $conn->query("SELECT * FROM users ORDER BY id DESC");
                 <thead>
                     <tr>
                         <th style="padding-left:20px;">ชื่อผู้ใช้</th>
-                        <th>ชื่อ-นามสกุล</th>
                         <th>บทบาท (Role)</th>
-                        <th>แผนก</th>
-                        <th>จัดการ</th>
+                        <th style="text-align:center;">จัดการ</th>
                     </tr>
                 </thead>
                 <tbody>
                     <?php while($row = $result->fetch_assoc()): ?>
                     <tr>
                         <td style="padding-left:20px;">
-                            <strong><?php echo $row['username']; ?></strong><br>
+                            <div style="font-weight:bold; font-size:1.1rem;"><?php echo $row['username']; ?></div>
                             <small style="color:#aaa;"><?php echo $row['email']; ?></small>
                         </td>
-                        <td><?php echo $row['fullname']; ?></td>
+                        
                         <td>
                             <?php 
                             $r = $row['role'];
@@ -60,8 +61,8 @@ $result = $conn->query("SELECT * FROM users ORDER BY id DESC");
                             ?>
                             <span class="badge <?php echo $cls; ?>"><?php echo ucfirst($r); ?></span>
                         </td>
-                        <td><?php echo $row['department']; ?></td>
-                        <td>
+                        
+                        <td style="text-align:center;">
                             <a href="manage_users.php?del=<?php echo $row['id']; ?>" class="btn-small btn-red" onclick="return confirm('ยืนยันลบ?');">ลบ</a>
                         </td>
                     </tr>

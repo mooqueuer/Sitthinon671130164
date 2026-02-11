@@ -1,36 +1,47 @@
 <?php 
-include('db.php'); // เรียกใช้ไฟล์เชื่อมต่อฐานข้อมูล
+// 1. ตั้งค่าการเชื่อมต่อฐานข้อมูล (localhost) ตรงนี้เลย
+$servername = "localhost";
+$username = "root";
+$password = "12345678"; // รหัสผ่าน AppServ ของคุณ
+$dbname = "my_website";
+
+$conn = new mysqli($servername, $username, $password, $dbname);
+
+// เช็คว่าเชื่อมต่อได้ไหม
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
 
 if (isset($_POST['register'])) {
-    // 1. รับค่าจากฟอร์ม
     $user = $_POST['username'];
     $email = $_POST['email'];
-    $pass = password_hash($_POST['password'], PASSWORD_DEFAULT); // เข้ารหัสรหัสผ่าน
-    $name = $_POST['fullname'];  // รับค่าชื่อ-นามสกุล
-    $dept = $_POST['department']; // รับค่าแผนก
-    $role = $_POST['role'];       // รับค่าบทบาท
+    $pass = password_hash($_POST['password'], PASSWORD_DEFAULT);
+    
+    // 2. จุดแก้ปัญหา: ถ้าไม่มีชื่อส่งมา ให้ใช้ค่าเริ่มต้นว่า "ไม่ได้ระบุ"
+    $name = isset($_POST['fullname']) ? $_POST['fullname'] : "ไม่ได้ระบุชื่อ";
+    $dept = isset($_POST['department']) ? $_POST['department'] : "-";
+    
+    // รับค่า role (ถ้าไม่มีให้เป็น student)
+    $role = isset($_POST['role']) ? $_POST['role'] : "student";
 
-    // 2. เตรียมคำสั่ง SQL (ต้องใส่ให้ครบทุกช่อง)
     $sql = "INSERT INTO users (username, email, password, fullname, department, role) VALUES (?, ?, ?, ?, ?, ?)";
     
     $stmt = $conn->prepare($sql);
     if ($stmt) {
-        // 3. ผูกตัวแปรกับ SQL (s = string 6 ตัว)
         $stmt->bind_param("ssssss", $user, $email, $pass, $name, $dept, $role);
 
-        // 4. สั่งทำงาน
         if ($stmt->execute()) {
             echo "
             <script>
-                alert('สมัครสมาชิกสำเร็จ! กรุณาเข้าสู่ระบบ');
+                alert('สมัครสมาชิกสำเร็จแล้ว!');
                 window.location = 'login.html';
             </script>";
         } else {
-            echo "Error executing query: " . $stmt->error;
+            echo "Error: " . $stmt->error;
         }
         $stmt->close();
     } else {
-        echo "Error preparing statement: " . $conn->error;
+        echo "Error: " . $conn->error;
     }
 }
 $conn->close();
