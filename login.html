@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <title>เข้าสู่ระบบ</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body style="display:flex; justify-content:center; align-items:center; height:100vh;">
+    <div class="card" style="width:400px; text-align:center;">
+        <h2 style="color:#45f3ff; margin-bottom:20px;">SYSTEM LOGIN</h2>
+        <form action="login_db.php" method="POST">
+            <input type="text" name="username" placeholder="ชื่อผู้ใช้" required>
+            <input type="password" name="password" placeholder="รหัสผ่าน" required>
+            <button type="submit" name="login_user">เข้าสู่ระบบ</button>
+        </form>
+        <p style="margin-top:15px; font-size:0.9rem;">
+            ยังไม่มีบัญชี? <a href="register.html" style="color:#45f3ff;">สมัครสมาชิก</a>
+        </p>
+    </div>
+</body>
+</html>

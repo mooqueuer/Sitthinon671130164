@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ยินดีต้อนรับ - ระบบประเมิน</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            flex-direction: column;
+        }
+        .landing-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(15px);
+            padding: 50px;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            max-width: 600px;
+            animation: fadeIn 1s ease-out;
+        }
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 10px;
+            background: linear-gradient(to right, #45f3ff, #bc13fe);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        p { color: #ccc; margin-bottom: 40px; font-size: 1.1rem; }
+        .btn-group { display: flex; gap: 20px; justify-content: center; }
+        .btn-landing {
+            padding: 15px 40px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1.1rem;
+            transition: 0.3s;
+        }
+        .btn-login { background: #45f3ff; color: #000; box-shadow: 0 0 15px rgba(69, 243, 255, 0.4); }
+        .btn-register { border: 2px solid #45f3ff; color: #45f3ff; }
+        .btn-register:hover { background: #45f3ff; color: #000; }
+        .btn-login:hover { transform: scale(1.05); box-shadow: 0 0 25px rgba(69, 243, 255, 0.6); }
+        
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body>
+
+    <div class="landing-card">
+        <div style="font-size: 80px; margin-bottom: 20px;">🚀</div>
+        <h1>Evaluation System</h1>
+        <p>ระบบประเมินบุคลากรและนักศึกษาออนไลน์<br>สะดวก รวดเร็ว ปลอดภัย</p>
+        
+        <div class="btn-group">
+            <a href="login.html" class="btn-landing btn-login"><i class="fas fa-sign-in-alt"></i> เข้าสู่ระบบ</a>
+            <a href="register.html" class="btn-landing btn-register"><i class="fas fa-user-plus"></i> สมัครสมาชิก</a>
+        </div>
+    </div>
+
+</body>
+</html>

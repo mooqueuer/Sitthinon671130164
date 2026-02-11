@@ -1,0 +1,79 @@
+@import url('https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;600&display=swap');
+
+:root {
+    --bg-color: #0f0c29;
+    --card-bg: rgba(255, 255, 255, 0.05);
+    --text-main: #ffffff;
+    --neon-blue: #45f3ff;
+    --neon-purple: #bc13fe;
+    --neon-green: #00ff88;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Kanit', sans-serif; }
+
+body {
+    background: linear-gradient(135deg, var(--bg-color), #302b63, #24243e);
+    color: var(--text-main);
+    min-height: 100vh;
+    font-size: 16px;
+}
+
+/* Navbar */
+.navbar {
+    background: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(10px);
+    padding: 1rem 2rem;
+    display: flex; justify-content: space-between; align-items: center;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+.brand { font-size: 1.5rem; font-weight: bold; color: var(--neon-blue); display: flex; align-items: center; gap: 10px; }
+.menu a { color: #ccc; text-decoration: none; margin-left: 20px; transition: 0.3s; }
+.menu a:hover { color: var(--neon-blue); }
+.btn-logout { background: #ff4757; color: white !important; padding: 5px 15px; border-radius: 5px; }
+
+/* Layout */
+.container { max-width: 1200px; margin: 2rem auto; padding: 0 1rem; }
+.card {
+    background: var(--card-bg); padding: 2rem; border-radius: 15px;
+    border: 1px solid rgba(255,255,255,0.1); margin-bottom: 2rem;
+}
+.hero { display: flex; align-items: center; gap: 20px; }
+.hero-icon { font-size: 3rem; }
+
+/* Grid Menu (Admin Dashboard) */
+.grid-menu { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; }
+.menu-card {
+    background: var(--card-bg); padding: 25px; border-radius: 15px;
+    border: 1px solid rgba(255,255,255,0.1); text-decoration: none; color: white;
+    transition: 0.3s; display: flex; flex-direction: column; justify-content: space-between; height: 180px;
+}
+.menu-card:hover { transform: translateY(-5px); border-color: var(--neon-blue); background: rgba(255,255,255,0.1); }
+.menu-card i { font-size: 2.5rem; margin-bottom: 15px; }
+.menu-card h3 { font-size: 1.2rem; margin-bottom: 5px; }
+.menu-card p { font-size: 0.9rem; color: #aaa; }
+
+/* Colors for Icons */
+.c-blue { color: #45f3ff; } .c-purple { color: #a29bfe; } 
+.c-pink { color: #ff7675; } .c-green { color: #55efc4; } .c-yellow { color: #ffeaa7; }
+
+/* Table */
+table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+th, td { padding: 15px; text-align: left; border-bottom: 1px solid rgba(255,255,255,0.1); }
+th { background: rgba(0,0,0,0.3); color: var(--neon-blue); }
+.badge { padding: 5px 10px; border-radius: 20px; font-size: 0.8rem; font-weight: bold; }
+.role-admin { background: #0984e3; color: white; }
+.role-evaluator { background: #fdcb6e; color: black; }
+.role-student { background: #6c5ce7; color: white; }
+
+/* Form & Inputs */
+input, select { 
+    width: 100%; padding: 12px; margin: 10px 0; background: rgba(0,0,0,0.3); 
+    border: 1px solid #444; color: white; border-radius: 5px; 
+}
+button { 
+    width: 100%; padding: 12px; background: var(--neon-blue); color: black; 
+    border: none; border-radius: 5px; font-weight: bold; cursor: pointer; margin-top: 10px; 
+}
+button:hover { background: white; }
+.btn-small { width: auto; padding: 5px 10px; margin: 0 2px; font-size: 0.8rem; }
+.btn-red { background: #ff4757; color: white; }
