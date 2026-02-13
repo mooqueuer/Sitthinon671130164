@@ -60,11 +60,16 @@ $result = $conn->query("SELECT * FROM users WHERE role != 'admin'");
                     </div>
                     
                     <div style="width:100%; display:flex; gap:10px;">
-                        <a href="assessment_form.php?target_user=<?php echo $user['username']; ?>" 
-                           style="flex:2; background:#00b894; color:white; text-align:center; padding:10px; border-radius:8px; text-decoration:none; font-weight:bold; transition:0.3s;">
-                           <i class="fas fa-pen"></i> ประเมิน
-                        </a>
-                    </div>
+    <a href="assessment_form.php?target_user=<?php echo $user['username']; ?>" 
+       style="flex:2; background:#00b894; color:white; text-align:center; padding:10px; border-radius:8px; text-decoration:none; font-weight:bold; transition:0.3s;">
+       <i class="fas fa-pen"></i> ประเมิน
+    </a>
+
+    <a href="assessment_history.php?target_user=<?php echo $user['username']; ?>" 
+       style="flex:1; background:#0984e3; color:white; text-align:center; padding:10px; border-radius:8px; text-decoration:none; font-weight:bold;">
+       <i class="fas fa-history"></i> ประวัติ
+    </a>
+</div>
 
                 </div>
                 <?php endwhile; ?>

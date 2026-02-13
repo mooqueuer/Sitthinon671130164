@@ -1,48 +1,56 @@
 <?php 
-// 1. ตั้งค่าการเชื่อมต่อฐานข้อมูล (localhost) ตรงนี้เลย
-$servername = "localhost";
-$username = "root";
-$password = "12345678"; // รหัสผ่าน AppServ ของคุณ
-$dbname = "my_website";
-
-$conn = new mysqli($servername, $username, $password, $dbname);
-
-// เช็คว่าเชื่อมต่อได้ไหม
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
+include('db.php'); // เรียกใช้ไฟล์เชื่อมต่อฐานข้อมูล
 
 if (isset($_POST['register'])) {
+    // 1. รับค่าจากฟอร์ม
     $user = $_POST['username'];
     $email = $_POST['email'];
     $pass = password_hash($_POST['password'], PASSWORD_DEFAULT);
     
-    // 2. จุดแก้ปัญหา: ถ้าไม่มีชื่อส่งมา ให้ใช้ค่าเริ่มต้นว่า "ไม่ได้ระบุ"
-    $name = isset($_POST['fullname']) ? $_POST['fullname'] : "ไม่ได้ระบุชื่อ";
+    // กำหนดค่าเริ่มต้นถ้าไม่มีส่งมา
+    $name = isset($_POST['fullname']) ? $_POST['fullname'] : "ไม่ได้ระบุ";
     $dept = isset($_POST['department']) ? $_POST['department'] : "-";
-    
-    // รับค่า role (ถ้าไม่มีให้เป็น student)
     $role = isset($_POST['role']) ? $_POST['role'] : "student";
 
-    $sql = "INSERT INTO users (username, email, password, fullname, department, role) VALUES (?, ?, ?, ?, ?, ?)";
-    
-    $stmt = $conn->prepare($sql);
-    if ($stmt) {
-        $stmt->bind_param("ssssss", $user, $email, $pass, $name, $dept, $role);
+    // -----------------------------------------------------
+    // จุดที่เพิ่มใหม่: เช็คก่อนว่ามี Username หรือ Email นี้หรือยัง?
+    // -----------------------------------------------------
+    $check_sql = "SELECT username FROM users WHERE username = ? OR email = ?";
+    $check_stmt = $conn->prepare($check_sql);
+    $check_stmt->bind_param("ss", $user, $email);
+    $check_stmt->execute();
+    $result = $check_stmt->get_result();
 
-        if ($stmt->execute()) {
-            echo "
-            <script>
-                alert('สมัครสมาชิกสำเร็จแล้ว!');
-                window.location = 'login.html';
-            </script>";
-        } else {
-            echo "Error: " . $stmt->error;
-        }
-        $stmt->close();
+    if ($result->num_rows > 0) {
+        // ถ้าเจอข้อมูลซ้ำ (num_rows มากกว่า 0) ให้แจ้งเตือนและดีดกลับ
+        echo "
+        <script>
+            alert('❌ สมัครไม่ผ่าน: ชื่อผู้ใช้ (Username) หรือ อีเมลนี้ มีคนใช้แล้วครับ!');
+            window.history.back();
+        </script>";
     } else {
-        echo "Error: " . $conn->error;
+        // 2. ถ้าไม่ซ้ำ ค่อยบันทึกลงฐานข้อมูล
+        $sql = "INSERT INTO users (username, email, password, fullname, department, role) VALUES (?, ?, ?, ?, ?, ?)";
+        
+        $stmt = $conn->prepare($sql);
+        if ($stmt) {
+            $stmt->bind_param("ssssss", $user, $email, $pass, $name, $dept, $role);
+
+            if ($stmt->execute()) {
+                echo "
+                <script>
+                    alert('✅ สมัครสมาชิกสำเร็จแล้ว!');
+                    window.location = 'login.html';
+                </script>";
+            } else {
+                echo "Error executing query: " . $stmt->error;
+            }
+            $stmt->close();
+        } else {
+            echo "Error preparing statement: " . $conn->error;
+        }
     }
+    $check_stmt->close();
 }
 $conn->close();
 ?>
